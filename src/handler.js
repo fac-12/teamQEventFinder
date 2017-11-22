@@ -1,8 +1,10 @@
 /*eslint-disable*/
-
+const request = require('request');
 const fs = require('fs');
 const path = require('path');
-const ticketmasterApi = require('./logic');
+const cleanData = require('./logic');
+const querystring = require('querystring');
+const api_key = 'D1aKjY2zznvOfRideoCk8IGQfO2gTBct';
 
 
 const homeHandler = (request, response) => {
@@ -42,10 +44,21 @@ const staticFileHandler = (request, response, endpoint) => {
   })
 }
 
-const searchHandler = (request, response, endpoint) => {
-  var result = ticketmasterApi(endpoint);
-  response.writeHead(200, {"Content-Type": "text/html"});
-  response.end(JSON.stringify(result))
+const searchHandler = (req, response, endpoint) => {
+  var queries = querystring.parse(endpoint.split("?")[1], response);
+  const options = {
+    url: "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + api_key + "&latlong=" + queries.ll,
+    method: 'GET'
+  }
+  request(options, (err, res, body) => {
+    if(err){
+      console.log("error :", error);
+    }
+    var outcome = JSON.parse(body);
+    var newOutcome = cleanData(outcome);
+    response.writeHead(200, {"Content-Type": "text/html"});
+    response.end(JSON.stringify(newOutcome));
+  });
 }
 
 module.exports = {homeHandler, staticFileHandler, searchHandler};
