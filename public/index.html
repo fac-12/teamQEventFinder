@@ -5,11 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title> Event finder </title>
-    <link rel="stylesheet" href="public/style.css">
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
+    <form id="events-form">
+        <label for="start-date-picker"> Start Date Picker
+            <input type="date" class="start-date-picker" id="start-date-picker">
+        </label>
 
+        <label for="end-date-picker"> End Date Picker
+            <input type="date" class="end-date-picker" id="end-date-picker">
+        </label>
 
-  <script type="text/javascript" src="public/script.js"></script>
+        <label for="postcode"> Post Code
+            <input type="text" class="postcode-input" placeholder="Enter Your Postcode" id="postcode">
+        </label>
+
+        <button type="button" class="search-btn" id="location-btn"> Search by my location </button>
+        <button type="button" class="search-btn" id="postcode-btn"> Search by post code </button>
+
+    </form>
+
+    <div class="error-display"> </div>
+
+    <div class="display"> </div>
+
+  <script type="text/javascript" src="script.js"></script>
   </body>
 </html>
