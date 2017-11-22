@@ -4,24 +4,27 @@
 const startDatePicker = document.querySelector('.start-date-picker');
 const endDatePicker = document.querySelector('.end-date-picker');
 const postCodeInput = document.querySelector('.postcode-input');
+const radiusInput = document.getElementById('radius');
 const errorDisplay = document.querySelector('.error-display');
 const searchByPostcode = document.getElementById('postcode-btn');
 const searchByLocation = document.getElementById('location-btn');
+const inputForm = document.getElementById('input-form');
 
 searchByLocation.addEventListener('click', function(){
   try {
     locationSearch();
-    errorDisplay.textContent = '';
+    errorDisplay.textContent = 'loading...';
   }
   catch (error) {
     errorDisplay.textContent = error;
   }
 });
 
-searchByPostcode.addEventListener('click', function(){
+inputForm.addEventListener('submit', function(event){
+  event.preventDefault();
     try {
       postCodeSearch();
-      errorDisplay.textContent = '';
+      errorDisplay.textContent = 'loading...';
     }
     catch (error){
       errorDisplay.textContent = error;
@@ -41,7 +44,7 @@ function locationSearch(){
   if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(function (position) {
       latLong = position.coords.latitude+","+position.coords.longitude;
-      var url = "/search?ll=" + latLong;
+      var url = "/search?ll=" + latLong + "&radius=" + radiusInput.value;
       if(startDatePicker.value){
           url += "&sdate=" + startDatePicker.value;
       }
@@ -51,7 +54,7 @@ function locationSearch(){
       request(url, drawMap);
     }, function (error) {
       if (error) {
-        errorDisplay.textContent = "Cannot get location without user approval";
+        errorDisplay.textContent = "Sorry, can't find your location";
       }
     });
   } else {
@@ -64,7 +67,7 @@ function submitPostcode(response){
     if (response.status === 404){
       errorDisplay.textContent = 'Not a valid postcode';
     } else {
-      var url = "/search?ll=" + response.result.latitude + "," + response.result.longitude;
+      var url = "/search?ll=" + response.result.latitude + "," + response.result.longitude + "&radius=" + radiusInput.value;
       if(startDatePicker.value){
           url += "&sdate=" + startDatePicker.value;
       }
@@ -81,9 +84,10 @@ function postCodeConverter(postcode){
 }
 
 function drawMap(response){
+  errorDisplay.textContent = '';
   console.log(response);
  }
- 
+
  function request(url, cb){
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
