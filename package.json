@@ -1,0 +1,18 @@
+{
+  "name": "teamqeventfinder",
+  "version": "1.0.0",
+  "description": "Event finder",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape ./test/tests.js | tap-spec"
+  },
+  "author": "Lucy, Fatimat, Shannon and Mohamed",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "shot": "^4.0.4",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.8.0"
+  }
+}
