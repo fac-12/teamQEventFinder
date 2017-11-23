@@ -28,7 +28,7 @@ searchByLocation.addEventListener('click', function(){
   try {
     locationSearch();
     errorDisplay.className = "error-display";
-    errorDisplay.textContent = 'loading...';
+    errorDisplay.textContent = 'Loading...';
     clearElement(eventDisplay);
   }
   catch (error) {
@@ -44,7 +44,7 @@ inputForm.addEventListener('submit', function(event){
     try {
       postCodeSearch();
       errorDisplay.className = "error-display";
-      errorDisplay.textContent = 'loading...';
+      errorDisplay.textContent = 'Loading...';
       clearElement(eventDisplay);
     }
     catch (error){
@@ -125,6 +125,7 @@ function drawEventList(response) {
   response.forEach(function(event) {
     var eventContainer = document.createElement('div');
     eventContainer.className = "event-container";
+    var textContainer = document.createElement('div');
     var title = document.createElement('h3');
     var link = document.createElement('a');
     link.setAttribute('href', event.url);
@@ -132,15 +133,21 @@ function drawEventList(response) {
     var titleText = document.createTextNode(event.name);
     link.appendChild(titleText);
     title.appendChild(link);
-    eventContainer.appendChild(title);
+    textContainer.appendChild(title);
     var venue = document.createElement('p');
     var venueText = document.createTextNode(event.venue);
     venue.appendChild(venueText);
-    eventContainer.appendChild(venue);
+    textContainer.appendChild(venue);
     var date = document.createElement('p');
     var dateText = document.createTextNode(event.date+"  "+(event.time ? event.time : ""));
     date.appendChild(dateText);
-    eventContainer.appendChild(date);
+    textContainer.appendChild(date);
+    eventContainer.appendChild(textContainer);
+    var image = document.createElement('div');
+    image.style.backgroundImage = "url('"+event.imageUrl+"')";
+    console.log(image.style.backgroundImage);
+    image.className = "thumbnail";
+    eventContainer.appendChild(image);
     eventDisplay.appendChild(eventContainer);
   });
 }
