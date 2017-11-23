@@ -17,11 +17,7 @@ var markers = [
 var infoWindowContent = [
     ['<div class="info_content">' +
     '<h3>London Eye</h3>' +
-    '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>' +        '</div>'],
-    ['<div class="info_content">' +
-    '<h3>Palace of Westminster</h3>' +
-    '<p>The Palace of Westminster is the meeting place of the House of Commons and the House of Lords, the two houses of the Parliament of the United Kingdom. Commonly known as the Houses of Parliament after its tenants.</p>' +
-    '</div>']
+    '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>' +        '</div>']
 ];
 
 searchByLocation.addEventListener('click', function(){
@@ -37,6 +33,23 @@ searchByLocation.addEventListener('click', function(){
     clearElement(eventDisplay);
   }
 });
+
+function todayDate(){
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
+
+  var yyyy = today.getFullYear();
+  if(dd<10){
+      dd='0'+dd;
+  }
+  if(mm<10){
+      mm='0'+mm;
+  }
+  var today = yyyy+"-"+mm+"-"+dd;
+  startDatePicker.value = today;
+}
+todayDate();
 
 inputForm.addEventListener('submit', function(event){
   event.preventDefault();
@@ -110,7 +123,7 @@ function submitPostcode(response){
 
 function postCodeConverter(postcode){
   var validPostcode = postcode.split(' ').join('');
-  request('http://api.postcodes.io/postcodes/' + validPostcode, submitPostcode);
+  request('https://api.postcodes.io/postcodes/' + validPostcode, submitPostcode);
 }
 
 function updateEvents(response) {
