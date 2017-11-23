@@ -1,11 +1,11 @@
 /* eslint-disable */
 
 
-const startDatePicker = document.querySelector('.start-date-picker');
-const endDatePicker = document.querySelector('.end-date-picker');
-const postCodeInput = document.querySelector('.postcode-input');
+const startDatePicker = document.querySelector('#start-date-picker');
+const endDatePicker = document.querySelector('#end-date-picker');
+const postCodeInput = document.querySelector('#postcode');
 const radiusInput = document.getElementById('radius');
-const errorDisplay = document.querySelector('.error-display');
+const errorDisplay = document.querySelector('#error-display');
 const searchByPostcode = document.getElementById('postcode-btn');
 const searchByLocation = document.getElementById('location-btn');
 const mapDisplay = document.querySelector('.map-display');
@@ -15,10 +15,14 @@ const inputForm = document.getElementById('input-form');
 searchByLocation.addEventListener('click', function(){
   try {
     locationSearch();
+    errorDisplay.className = "error-display";
     errorDisplay.textContent = 'loading...';
+    clearElement(eventDisplay);
   }
   catch (error) {
+    errorDisplay.className = "error-display";
     errorDisplay.textContent = error;
+    clearElement(eventDisplay);
   }
 });
 
@@ -27,10 +31,14 @@ inputForm.addEventListener('submit', function(event){
   console.log("submitted");
     try {
       postCodeSearch();
+      errorDisplay.className = "error-display";
       errorDisplay.textContent = 'loading...';
+      clearElement(eventDisplay);
     }
     catch (error){
+      errorDisplay.className = "error-display";
       errorDisplay.textContent = error;
+      clearElement(eventDisplay);
     }
 });
 
@@ -58,7 +66,9 @@ function locationSearch(){
       request(url, updateEvents);
     }, function (error) {
       if (error) {
+        errorDisplay.className = "error-display";
         errorDisplay.textContent = "Sorry, can't find your location";
+        clearElement(eventDisplay);
       }
     });
   } else {
@@ -69,7 +79,9 @@ function locationSearch(){
 
 function submitPostcode(response){
     if (response.status === 404){
+      errorDisplay.className = "error-display";
       errorDisplay.textContent = 'Not a valid postcode';
+      clearElement(eventDisplay);
     } else {
       var url = "/search?ll=" + response.result.latitude + "," + response.result.longitude + "&radius=" + radiusInput.value;
       if(startDatePicker.value){
@@ -89,6 +101,7 @@ function postCodeConverter(postcode){
 
 function updateEvents(response) {
   drawEventList(response);
+  errorDisplay.className = "error-display hidden";
   console.log(response[0]);
 }
 
@@ -129,17 +142,17 @@ function initialize() {
   var mapOptions = {
       mapTypeId: 'roadmap'
   };
-                  
+
   // Display a map on the page
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
   map.setTilt(45);
-      
+
   // Multiple Markers
   var markers = [
       ['London Eye, London', 51.503454,-0.119562],
       ['Palace of Westminster, London', 51.499633,-0.124755]
   ];
-                      
+
   // Info Window Content
   var infoWindowContent = [
       ['<div class="info_content">' +
@@ -150,11 +163,11 @@ function initialize() {
       '<p>The Palace of Westminster is the meeting place of the House of Commons and the House of Lords, the two houses of the Parliament of the United Kingdom. Commonly known as the Houses of Parliament after its tenants.</p>' +
       '</div>']
   ];
-      
+
   // Display multiple markers on a map
   var infoWindow = new google.maps.InfoWindow(), marker, i;
-  
-  // Loop through our array of markers & place each one on the map  
+
+  // Loop through our array of markers & place each one on the map
   for( i = 0; i < markers.length; i++ ) {
       var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
       bounds.extend(position);
@@ -163,8 +176,8 @@ function initialize() {
           map: map,
           title: markers[i][0]
       });
-      
-      // Allow each marker to have an info window    
+
+      // Allow each marker to have an info window
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
           return function() {
               infoWindow.setContent(infoWindowContent[i][0]);
@@ -181,7 +194,7 @@ function initialize() {
       this.setZoom(14);
       google.maps.event.removeListener(boundsListener);
   });
-  
+
 }
 
 initMap();
@@ -234,7 +247,7 @@ initMap();
 }
 
 function clearElement(element){
-  while (element.firstChild) {
-      element.removeChild(element.firstChild);
+  while (element.childElementCount > 1) {
+      element.removeChild(element.lastChild);
   }
 }
