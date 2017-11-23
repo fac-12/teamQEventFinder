@@ -23,7 +23,7 @@ function cleanData(data) {
     newJSON[i] = {};
     newJSON[i].name = event.name;
     newJSON[i].url = event.url;
-    newJSON[i].imageUrl = event.images[4].url;
+    newJSON[i].imageUrl = event.images[1].url;
     newJSON[i].distance = event.distance;
     newJSON[i].units = event.units;
     newJSON[i].date = event.dates.start.localDate;
