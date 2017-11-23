@@ -110,7 +110,7 @@ function submitPostcode(response){
 
 function postCodeConverter(postcode){
   var validPostcode = postcode.split(' ').join('');
-  request('http://api.postcodes.io/postcodes/' + validPostcode, submitPostcode);
+  request('https://api.postcodes.io/postcodes/' + validPostcode, submitPostcode);
 }
 
 function updateEvents(response) {
