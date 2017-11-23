@@ -95,33 +95,33 @@ function postCodeConverter(postcode){
 //   }
 // }
 
-// function createEventList(){
-//   var eventList = document.createElement('ul');
-//   var eventItem =  document.createElement('li');
-
+// function initMap(){
+//   var map = new  google.maps.Map(mapDisplay, {
+//     center: {lat: "51.509865", long: "-0.118092"},
+//     zoom: 10
+//   });
 // }
-request('https://maps.googleapis.com/maps/api/js?key=AIzaSyAmsmOS1UAZY-Mu3kGMEepDFO16VWvALTg')
 
+// function drawMap(response){
+//   var map = new  google.maps.Map(mapDisplay, {
+//     center: {lat: response.lat, long: response.long},
+//     zoom: 10
+//   })
+//   response.forEach( event => {
+//     addMarker(map, event);
+//   })
+//  }
 
-function drawMap(response){
-  var map = new  google.maps.Map(mapDisplay, {
-    center: {lat: response.lat, long: response.long},
-    zoom: 10
-  })
-  response.forEach( event => {
-    addMarker(map, event);
-  })
- }
-
- function addMarker(map, event){
-    var marker = new google.maps.Marker({
-      position: new google.maps.LatLng(event.lat, event.long),
-      map: map
-    });
-    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
- }
+//  function addMarker(map, event){
+//     var marker = new google.maps.Marker({
+//       position: new google.maps.LatLng(event.lat, event.long),
+//       map: map
+//     });
+//     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+//  }
 
  function request(url, cb){
+  var proxy = 'https://cors-anywhere.herokuapp.com/';
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4){
@@ -129,6 +129,6 @@ function drawMap(response){
       cb(result);
     }
   }
-  xhr.open("GET", url, true);
+  xhr.open("GET", proxy + url, true);
   xhr.send();
 }
