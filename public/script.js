@@ -15,9 +15,9 @@ var markers = [
     ['London Eye, London', 51.503454,-0.119562],
 ];
 var infoWindowContent = [
-    ['<div class="info_content">' +
-    '<h3>London Eye</h3>' +
-    '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>' +        '</div>']
+    [
+
+    ]
 ];
 
 searchByLocation.addEventListener('click', function(){
