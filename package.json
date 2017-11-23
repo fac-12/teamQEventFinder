@@ -4,7 +4,7 @@
   "description": "Event finder",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./src/server.js",
+    "start": "node ./src/server.js",
     "test": "tape ./test/tests.js | tap-spec"
   },
   "author": "Lucy, Fatimat, Shannon and Mohamed",
