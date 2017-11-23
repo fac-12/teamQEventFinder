@@ -2,7 +2,7 @@
   box-sizing: border-box;
   margin: 0px;
   font-family: Roboto, sans-serif;
-  color: rgba(46, 87, 112, 1);
+  outline-color: rgba(46, 87, 112, 1);;
 }
 
 .flex-container {
@@ -11,7 +11,42 @@
 }
 
 .event-container {
-  border: 1px solid black;
+  width: 94%;
+  margin: 0.5rem auto;
+  background-color: rgba(46, 87, 112, 1);
+  border-radius: 10px;
+  color: white;
+  display:flex;
+  justify-content: space-between;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.event-container h3 {
+  margin: 7px 7px 5px 10px;
+}
+
+.event-container p {
+  margin: 0px 7px 7px 10px;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.thumbnail {
+  width: 40%;
+  min-width: 40%;
+  background-position: center;
+  background-size: cover;
+  border-radius: 0 10px 10px 0;
+  /* width: auto;
+  height: 70px;
+  align-self: center;
+  margin-left: 0.5rem; */
 }
 
 .event-display {
@@ -25,7 +60,7 @@
 .left-bar {
   display: flex;
   flex-direction: column;
-  width: 22rem;
+  width: 24rem;
   height: 100vh;
 }
 
@@ -48,6 +83,7 @@ form {
   padding: 10px 5px;
   min-height: 19rem;
   background-color: rgba(169, 204, 251, 0.7);
+  color: rgba(46, 87, 112, 1);
 }
 
 .input-field {
@@ -69,17 +105,19 @@ input {
 .search-btn {
   width: 48%;
   padding: 10px 5px;
-  margin: 10px 5px;
+  margin: 1.2rem 5px;
+  border-radius: 5px;
   background-color: rgba(46, 87, 112, 1);
   color: white;
   border: 0px;
 }
 
 .error-display {
-  margin-top: 5px;
   height: 2rem;
-  color: red;
-  display: block;
+  color: rgba(46, 87, 112, 1);
+  display: inline-block;
+  width: 100%;
+  text-align: center;
 }
 
 label {
