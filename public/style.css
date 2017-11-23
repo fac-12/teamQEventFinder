@@ -145,7 +145,6 @@ form >p {
 @media screen and (max-width: 760px) {
 
 .flex-container{
-  display: flex;
   width: 100vw;
   height: auto;
   flex-direction: column;
@@ -160,6 +159,7 @@ form >p {
 .map-display {
   width: 100vw;
   align-self: flex-end;
+  border: none;
 }
 
 .eventContainer {

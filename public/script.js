@@ -53,7 +53,6 @@ todayDate();
 
 inputForm.addEventListener('submit', function(event){
   event.preventDefault();
-  console.log("submitted");
     try {
       postCodeSearch();
       errorDisplay.className = "error-display";
@@ -70,7 +69,6 @@ inputForm.addEventListener('submit', function(event){
 
 
 function postCodeSearch(){
-  console.log("postcode search");
   if (postCodeInput.value === ''){
     throw new Error('No postcode entered');
   } else {
@@ -158,7 +156,6 @@ function drawEventList(response) {
     eventContainer.appendChild(textContainer);
     var image = document.createElement('div');
     image.style.backgroundImage = "url('"+event.imageUrl+"')";
-    console.log(image.style.backgroundImage);
     image.className = "thumbnail";
     eventContainer.appendChild(image);
     eventDisplay.appendChild(eventContainer);
