@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/server.js",
-    "test": "tape ./test/tests.js | tap-spec"
+    "test": "tape ./tests/test.js | tap-spec"
   },
   "author": "Lucy, Fatimat, Shannon and Mohamed",
   "license": "ISC",
