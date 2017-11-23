@@ -23,14 +23,10 @@ var infoWindowContent = [
 searchByLocation.addEventListener('click', function(){
   try {
     locationSearch();
-    errorDisplay.className = "error-display";
-    errorDisplay.textContent = 'Loading...';
-    clearElement(eventDisplay);
+    displayError("Loading...");
   }
   catch (error) {
-    errorDisplay.className = "error-display";
-    errorDisplay.textContent = error;
-    clearElement(eventDisplay);
+    displayError(error);
   }
 });
 
@@ -53,24 +49,18 @@ todayDate();
 
 inputForm.addEventListener('submit', function(event){
   event.preventDefault();
-  console.log("submitted");
     try {
       postCodeSearch();
-      errorDisplay.className = "error-display";
-      errorDisplay.textContent = 'Loading...';
-      clearElement(eventDisplay);
+      displayError("Loading...");
     }
     catch (error){
-      errorDisplay.className = "error-display";
-      errorDisplay.textContent = error;
-      clearElement(eventDisplay);
+      displayError(error);
     }
     markers = [];
 });
 
 
 function postCodeSearch(){
-  console.log("postcode search");
   if (postCodeInput.value === ''){
     throw new Error('No postcode entered');
   } else {
@@ -81,21 +71,11 @@ function postCodeSearch(){
 function locationSearch(){
   if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(function (position) {
-      latLong = position.coords.latitude+","+position.coords.longitude;
-      // markers.push(["current location", position.coords.latitude,position.coords.longitude])
-      var url = "/search?ll=" + latLong + "&radius=" + radiusInput.value;
-      if(startDatePicker.value){
-          url += "&sdate=" + startDatePicker.value;
-      }
-      if(endDatePicker.value){
-        url += "&edate=" + endDatePicker.value;
-      }
+      var url = buildUrl(position.coords.latitude, position.coords.longitude);s
       request(url, updateEvents);
     }, function (error) {
       if (error) {
-        errorDisplay.className = "error-display";
-        errorDisplay.textContent = "Sorry, can't find your location";
-        clearElement(eventDisplay);
+        displayError("Sorry, can't find your location");
       }
     });
   } else {
@@ -106,17 +86,9 @@ function locationSearch(){
 
 function submitPostcode(response){
     if (response.status === 404){
-      errorDisplay.className = "error-display";
-      errorDisplay.textContent = 'Not a valid postcode';
-      clearElement(eventDisplay);
+      displayError('Not a valid postcode');
     } else {
-      var url = "/search?ll=" + response.result.latitude + "," + response.result.longitude + "&radius=" + radiusInput.value;
-      if(startDatePicker.value){
-          url += "&sdate=" + startDatePicker.value;
-      }
-      if(endDatePicker.value){
-        url += "&edate=" + endDatePicker.value;
-      }
+      var url = buildUrl(response.result.latitude,response.result.longitude);
       request(url, updateEvents);
     }
 }
@@ -248,4 +220,21 @@ function clearElement(element){
   while (element.childElementCount > 1) {
       element.removeChild(element.lastChild);
   }
+}
+
+function displayError(message) {
+  errorDisplay.className = "error-display";
+  errorDisplay.textContent = message;
+  clearElement(eventDisplay);
+}
+
+function buildUrl(lat,long) {
+  var url = "/search?ll=" + lat + "," + long + "&radius=" + radiusInput.value;
+  if(startDatePicker.value){
+      url += "&sdate=" + startDatePicker.value;
+  }
+  if(endDatePicker.value){
+    url += "&edate=" + endDatePicker.value;
+  }
+  return url;
 }
