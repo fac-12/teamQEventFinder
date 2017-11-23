@@ -1,12 +1,14 @@
 /*eslint-disable*/
-
+const request = require('request');
 const fs = require('fs');
 const path = require('path');
+const cleanData = require('./logic');
+const querystring = require('querystring');
+const api_key = 'D1aKjY2zznvOfRideoCk8IGQfO2gTBct';
 
 
-
-var homeHandler = (request, response) => {
-  var filePath = path.join(__dirname, '..', 'public', 'index.html')
+const homeHandler = (request, response) => {
+  const filePath = path.join(__dirname, '..', 'public', 'index.html')
   fs.readFile(filePath, function(err, file) {
     if(err){
       response.writeHead(500, {'Content-Type':'text/plain'});
@@ -17,15 +19,15 @@ var homeHandler = (request, response) => {
   })
 }
 
-var staticFileHandler = (request, response, endpoint) => {
-  var extensionType = {
+const staticFileHandler = (request, response, endpoint) => {
+  const extensionType = {
     html: 'text/html',
     css: 'txt/css',
     js: 'application/javascript',
     ico: 'image/x-icon'
   }
-  var extension = endpoint.split('.')[1];
-  var filePath = path.join(__dirname, '..', endpoint)
+  const extension = endpoint.split('.')[1];
+  const filePath = path.join(__dirname, '..', endpoint)
   fs.readFile(filePath, function(err, file) {
     if(err && err.code === 'ENOENT'){
       response.writeHead(404, {'Content-Type':'text/plain'});
@@ -42,4 +44,21 @@ var staticFileHandler = (request, response, endpoint) => {
   })
 }
 
-module.exports = {homeHandler, staticFileHandler};
+const searchHandler = (req, response, endpoint) => {
+  var queries = querystring.parse(endpoint.split("?")[1], response);
+  const options = {
+    url: "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + api_key + "&latlong=" + queries.ll,
+    method: 'GET'
+  }
+  request(options, (err, res, body) => {
+    if(err){
+      console.log("error :", error);
+    }
+    var outcome = JSON.parse(body);
+    var newOutcome = cleanData(outcome);
+    response.writeHead(200, {"Content-Type": "text/html"});
+    response.end(JSON.stringify(newOutcome));
+  });
+}
+
+module.exports = {homeHandler, staticFileHandler, searchHandler};

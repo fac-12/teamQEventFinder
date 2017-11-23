@@ -80,9 +80,10 @@ function postCodeConverter(postcode){
   request('http://api.postcodes.io/postcodes/' + validPostcode, submitPostcode);
 }
 
-function drawMap(){
-
+function drawMap(response){
+  console.log(response);
  }
+ 
  function request(url, cb){
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
