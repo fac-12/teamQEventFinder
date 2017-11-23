@@ -55,7 +55,7 @@ function locationSearch(){
       if(endDatePicker.value){
         url += "&edate=" + endDatePicker.value;
       }
-      request(url, drawMap);
+      request(url, updateEvents);
     }, function (error) {
       if (error) {
         errorDisplay.textContent = "Sorry, can't find your location";
@@ -78,7 +78,7 @@ function submitPostcode(response){
       if(endDatePicker.value){
         url += "&edate=" + endDatePicker.value;
       }
-      request(url, drawMap);
+      request(url, updateEvents);
     }
 }
 
@@ -87,6 +87,35 @@ function postCodeConverter(postcode){
   request('http://api.postcodes.io/postcodes/' + validPostcode, submitPostcode);
 }
 
+function updateEvents(response) {
+  drawEventList(response);
+  console.log(response[0]);
+}
+
+function drawEventList(response) {
+  clearElement(eventDisplay);
+  response.forEach(function(event) {
+    var eventContainer = document.createElement('div');
+    eventContainer.className = "event-container";
+    var title = document.createElement('h3');
+    var link = document.createElement('a');
+    link.setAttribute('href', event.url);
+    link.setAttribute('target','_blank');
+    var titleText = document.createTextNode(event.name);
+    link.appendChild(titleText);
+    title.appendChild(link);
+    eventContainer.appendChild(title);
+    var venue = document.createElement('p');
+    var venueText = document.createTextNode(event.venue);
+    venue.appendChild(venueText);
+    eventContainer.appendChild(venue);
+    var date = document.createElement('p');
+    var dateText = document.createTextNode(event.date+"  "+(event.time ? event.time : ""));
+    date.appendChild(dateText);
+    eventContainer.appendChild(date);
+    eventDisplay.appendChild(eventContainer);
+  });
+}
 
 // function showEvents(response, cb){
 //   response.forEach(response){
@@ -121,7 +150,7 @@ function postCodeConverter(postcode){
 //  }
 
  function request(url, cb){
-  var proxy = 'https://cors-anywhere.herokuapp.com/';
+  //var proxy = 'https://cors-anywhere.herokuapp.com/';
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4){
@@ -129,6 +158,12 @@ function postCodeConverter(postcode){
       cb(result);
     }
   }
-  xhr.open("GET", proxy + url, true);
+  xhr.open("GET", url, true);
   xhr.send();
+}
+
+function clearElement(element){
+  while (element.firstChild) {
+      element.removeChild(element.firstChild);
+  }
 }

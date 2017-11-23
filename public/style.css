@@ -1,5 +1,13 @@
-body {
-  
+* {
+  box-sizing: border-box;
+}
+
+.event-container {
+  border: 1px solid black;
+}
+
+.event-display {
+  width: 22rem;
 }
 
 form {
@@ -7,7 +15,7 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 20rem;
+  width: 22rem;
   padding: 10px 5px;
   border: 1px solid black;
 }
