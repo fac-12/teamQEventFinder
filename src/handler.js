@@ -6,8 +6,8 @@ const path = require('path');
 const cleanData = require('./logic');
 const querystring = require('querystring');
 
-const api_key = 'D1aKjY2zznvOfRideoCk8IGQfO2gTBct';
-//const api_key = process.env.API_KEY;
+//const api_key = 'D1aKjY2zznvOfRideoCk8IGQfO2gTBct';
+const api_key = process.env.API_KEY;
 
 const homeHandler = (request, response) => {
   const filePath = path.join(__dirname, '..', 'public', 'index.html')
