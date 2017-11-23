@@ -71,7 +71,7 @@ function postCodeSearch(){
 function locationSearch(){
   if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(function (position) {
-      var url = buildUrl(position.coords.latitude, position.coords.longitude);s
+      var url = buildUrl(position.coords.latitude, position.coords.longitude);
       request(url, updateEvents);
     }, function (error) {
       if (error) {
