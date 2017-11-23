@@ -24,6 +24,7 @@ searchByLocation.addEventListener('click', function(){
 
 inputForm.addEventListener('submit', function(event){
   event.preventDefault();
+  console.log("submitted");
     try {
       postCodeSearch();
       errorDisplay.textContent = 'loading...';
@@ -35,6 +36,7 @@ inputForm.addEventListener('submit', function(event){
 
 
 function postCodeSearch(){
+  console.log("postcode search");
   if (postCodeInput.value === ''){
     throw new Error('No postcode entered');
   } else {
