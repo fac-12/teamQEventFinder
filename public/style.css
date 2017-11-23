@@ -4,6 +4,7 @@
 
 .flex-container {
   display:flex;
+  height: 100vh;
 }
 
 .event-container {
@@ -11,7 +12,27 @@
 }
 
 .event-display {
+  max-height: 100vh;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.left-bar {
+  display: flex;
+  flex-direction: column;
   width: 22rem;
+  height: 98vh;
+}
+
+.map-display {
+  width: 100%;
+  height: 98vh;
+}
+
+.mapping {
+  width: 100%;
+  height: 100%;
 }
 
 form {
@@ -49,14 +70,4 @@ label {
   display: flex;
   justify-content: space-between;
   width: 90%;
-}
-
-.map-display {
-  width: 100%;
-  height: 98vh;
-}
-
-.mapping {
-  width: 100%;
-  height: 100%;
 }
