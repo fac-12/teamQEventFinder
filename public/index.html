@@ -8,32 +8,35 @@
     <link rel="stylesheet" href="./public/style.css">
   </head>
   <body>
-    <form id="input-form">
-        <label for="start-date-picker" class="input-field"> Start Date (optional)
-            <input type="date" class="start-date-picker" id="start-date-picker">
-        </label>
+    <div class="flex-container">
+    <div class="left-bar">
+        <form id="input-form">
+            <label for="start-date-picker" class="input-field"> Start Date (optional)
+                <input type="date" class="start-date-picker" id="start-date-picker">
+            </label>
 
-        <label for="end-date-picker" class="input-field"> End Date (optional)
-            <input type="date" class="end-date-picker" id="end-date-picker">
-        </label>
+            <label for="end-date-picker" class="input-field"> End Date (optional)
+                <input type="date" class="end-date-picker" id="end-date-picker">
+            </label>
 
-        <label for="postcode" class="input-field"> Post Code
-            <input type="text" class="postcode-input" placeholder="Enter a postcode" id="postcode">
-        </label>
-        <label for="radius" class="input-field"> Search Radius (miles)
-            <input type="number" class="radius-input" placeholder="10" id="radius" value="10">
-        </label>
-        <button type="submit" class="search-btn" id="postcode-btn"> Search by post code </button>
-        <button type="button" class="search-btn" id="location-btn"> Search by current location </button>
-        <div class="error-display"> </div>
+            <label for="postcode" class="input-field"> Post Code
+                <input type="text" class="postcode-input" placeholder="Enter a postcode" id="postcode">
+            </label>
+            <label for="radius" class="input-field"> Search Radius (miles)
+                <input type="number" class="radius-input" placeholder="10" id="radius" value="10">
+            </label>
+            <button type="submit" class="search-btn" id="postcode-btn"> Search by post code </button>
+            <button type="button" class="search-btn" id="location-btn"> Search by current location </button>
+            <div class="error-display"> </div>
+        </form>
 
-
-    </form>
-
-    <section class="event-display"> </section>
-    <div class="map-display"> </div>
+        <section class="event-display"> </section>
+    </div>
+    <div class="map-display"> 
+        <div id="map_canvas" class="mapping"></div>
+    </div>
 
   <script type="text/javascript" src="./public/script.js"></script>
-  <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmsmOS1UAZY-Mu3kGMEepDFO16VWvALTg&callback=initMap"></script> -->
-  </body>
+</div>  
+</body>
 </html>
