@@ -16,8 +16,7 @@ var markers = [
 ];
 var infoWindowContent = [
     ['<div class="info_content">' +
-    '<h3>London Eye</h3>' +
-    '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>' +        '</div>']
+    '<h3>London</h3>' +'</div>']
 ];
 
 searchByLocation.addEventListener('click', function(){
@@ -57,6 +56,7 @@ inputForm.addEventListener('submit', function(event){
       displayError(error);
     }
     markers = [];
+    infoWindowContent = [];
 });
 
 
@@ -102,7 +102,7 @@ function updateEvents(response) {
   drawEventList(response);
   errorDisplay.className = "error-display hidden";
   eventsMapMarkers(response);
-  initMap();
+  initialize();
 }
 
 function drawEventList(response) {
@@ -130,7 +130,6 @@ function drawEventList(response) {
     eventContainer.appendChild(textContainer);
     var image = document.createElement('div');
     image.style.backgroundImage = "url('"+event.imageUrl+"')";
-    console.log(image.style.backgroundImage);
     image.className = "thumbnail";
     eventContainer.appendChild(image);
     eventDisplay.appendChild(eventContainer);
@@ -199,19 +198,17 @@ function eventsMapMarkers(events){
     '<p> Venue: ' + event.venue + '</p>' +
     '<p> Date: '+ event.date + '</p>' +
     '<p> Time: '+ event.time + '</p>' +
-    '</div>'])
-  })
-  console.log(markers)
+    '</div>']);
+  });
 }
  function request(url, cb){
-  //var proxy = 'https://cors-anywhere.herokuapp.com/';
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4){
       var result = JSON.parse(xhr.responseText);
       cb(result);
     }
-  }
+  };
   xhr.open("GET", url, true);
   xhr.send();
 }
