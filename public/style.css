@@ -1,9 +1,13 @@
 * {
   box-sizing: border-box;
+  margin: 0px;
+  font-family: Roboto, sans-serif;
+  color: rgba(46, 87, 112, 1);
 }
 
 .flex-container {
   display:flex;
+  height: 100vh;
 }
 
 .event-container {
@@ -11,21 +15,44 @@
 }
 
 .event-display {
+  max-height: 100vh;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  background-color: rgba(169, 204, 251, 0.7);
+}
+
+.left-bar {
+  display: flex;
+  flex-direction: column;
   width: 22rem;
+  height: 100vh;
+}
+
+.map-display {
+  width: 100%;
+  height: 100vh;
+  border-left: 4px solid rgba(46, 87, 112, 1)
+}
+
+.mapping {
+  width: 100%;
+  height: 100%;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 22rem;
   padding: 10px 5px;
-  border: 1px solid black;
+  min-height: 19rem;
+  background-color: rgba(169, 204, 251, 0.7);
 }
 
 .input-field {
   margin: 5px;
+  font-size: 0.9rem;
 }
 
 input {
@@ -33,16 +60,26 @@ input {
   margin-left: 8px;
 }
 
+.button-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
 .search-btn {
-  width: 12rem;
-  padding: 5px;
-  margin: 5px;
+  width: 48%;
+  padding: 10px 5px;
+  margin: 10px 5px;
+  background-color: rgba(46, 87, 112, 1);
+  color: white;
+  border: 0px;
 }
 
 .error-display {
   margin-top: 5px;
   height: 2rem;
   color: red;
+  display: block;
 }
 
 label {
@@ -51,12 +88,19 @@ label {
   width: 90%;
 }
 
-.map-display {
-  width: 100%;
-  height: 98vh;
+h1 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
 
-.mapping {
-  width: 100%;
-  height: 100%;
+form >p {
+  margin-bottom:1.2rem;
+}
+
+.data-input, .date-picker {
+  width: 45%;
+}
+
+.hidden {
+  display: none;
 }

@@ -1,11 +1,11 @@
 /* eslint-disable */
 
 
-const startDatePicker = document.querySelector('.start-date-picker');
-const endDatePicker = document.querySelector('.end-date-picker');
-const postCodeInput = document.querySelector('.postcode-input');
+const startDatePicker = document.querySelector('#start-date-picker');
+const endDatePicker = document.querySelector('#end-date-picker');
+const postCodeInput = document.querySelector('#postcode');
 const radiusInput = document.getElementById('radius');
-const errorDisplay = document.querySelector('.error-display');
+const errorDisplay = document.querySelector('#error-display');
 const searchByPostcode = document.getElementById('postcode-btn');
 const searchByLocation = document.getElementById('location-btn');
 const mapDisplay = document.querySelector('.map-display');
@@ -27,10 +27,14 @@ var infoWindowContent = [
 searchByLocation.addEventListener('click', function(){
   try {
     locationSearch();
+    errorDisplay.className = "error-display";
     errorDisplay.textContent = 'loading...';
+    clearElement(eventDisplay);
   }
   catch (error) {
+    errorDisplay.className = "error-display";
     errorDisplay.textContent = error;
+    clearElement(eventDisplay);
   }
 });
 
@@ -39,10 +43,14 @@ inputForm.addEventListener('submit', function(event){
   console.log("submitted");
     try {
       postCodeSearch();
+      errorDisplay.className = "error-display";
       errorDisplay.textContent = 'loading...';
+      clearElement(eventDisplay);
     }
     catch (error){
+      errorDisplay.className = "error-display";
       errorDisplay.textContent = error;
+      clearElement(eventDisplay);
     }
     markers = [];
 });
@@ -72,7 +80,9 @@ function locationSearch(){
       request(url, updateEvents);
     }, function (error) {
       if (error) {
+        errorDisplay.className = "error-display";
         errorDisplay.textContent = "Sorry, can't find your location";
+        clearElement(eventDisplay);
       }
     });
   } else {
@@ -83,7 +93,9 @@ function locationSearch(){
 
 function submitPostcode(response){
     if (response.status === 404){
+      errorDisplay.className = "error-display";
       errorDisplay.textContent = 'Not a valid postcode';
+      clearElement(eventDisplay);
     } else {
       var url = "/search?ll=" + response.result.latitude + "," + response.result.longitude + "&radius=" + radiusInput.value;
       if(startDatePicker.value){
@@ -103,9 +115,9 @@ function postCodeConverter(postcode){
 
 function updateEvents(response) {
   drawEventList(response);
+  errorDisplay.className = "error-display hidden";
   eventsMapMarkers(response);
   initMap();
-  console.log(response[0]);
 }
 
 function drawEventList(response) {
@@ -154,11 +166,8 @@ function initialize() {
   // Multiple Markers
 
   // Info Window Content
-
   // Display multiple markers on a map
   var infoWindow = new google.maps.InfoWindow(), marker, i;
-  console.log("markers : " + markers.length)
-  // Loop through our array of markers & place each one on the map
   for( i = 0; i < markers.length; i++ ) {
       var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
       bounds.extend(position);
@@ -216,7 +225,7 @@ function eventsMapMarkers(events){
 }
 
 function clearElement(element){
-  while (element.firstChild) {
-      element.removeChild(element.firstChild);
+  while (element.childElementCount > 1) {
+      element.removeChild(element.lastChild);
   }
 }
