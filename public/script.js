@@ -4,24 +4,30 @@
 const startDatePicker = document.querySelector('.start-date-picker');
 const endDatePicker = document.querySelector('.end-date-picker');
 const postCodeInput = document.querySelector('.postcode-input');
+const radiusInput = document.getElementById('radius');
 const errorDisplay = document.querySelector('.error-display');
 const searchByPostcode = document.getElementById('postcode-btn');
 const searchByLocation = document.getElementById('location-btn');
+const mapDisplay = document.querySelector('.map-display');
+const eventDisplay = document.querySelector('.event-display');
+const inputForm = document.getElementById('input-form');
 
 searchByLocation.addEventListener('click', function(){
   try {
     locationSearch();
-    errorDisplay.textContent = '';
+    errorDisplay.textContent = 'loading...';
   }
   catch (error) {
     errorDisplay.textContent = error;
   }
 });
 
-searchByPostcode.addEventListener('click', function(){
+inputForm.addEventListener('submit', function(event){
+  event.preventDefault();
+  console.log("submitted");
     try {
       postCodeSearch();
-      errorDisplay.textContent = '';
+      errorDisplay.textContent = 'loading...';
     }
     catch (error){
       errorDisplay.textContent = error;
@@ -30,6 +36,7 @@ searchByPostcode.addEventListener('click', function(){
 
 
 function postCodeSearch(){
+  console.log("postcode search");
   if (postCodeInput.value === ''){
     throw new Error('No postcode entered');
   } else {
@@ -41,7 +48,7 @@ function locationSearch(){
   if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(function (position) {
       latLong = position.coords.latitude+","+position.coords.longitude;
-      var url = "/search?ll=" + latLong;
+      var url = "/search?ll=" + latLong + "&radius=" + radiusInput.value;
       if(startDatePicker.value){
           url += "&sdate=" + startDatePicker.value;
       }
@@ -51,7 +58,7 @@ function locationSearch(){
       request(url, drawMap);
     }, function (error) {
       if (error) {
-        errorDisplay.textContent = "Cannot get location without user approval";
+        errorDisplay.textContent = "Sorry, can't find your location";
       }
     });
   } else {
@@ -64,7 +71,7 @@ function submitPostcode(response){
     if (response.status === 404){
       errorDisplay.textContent = 'Not a valid postcode';
     } else {
-      var url = "/search?ll=" + response.result.latitude + "," + response.result.longitude;
+      var url = "/search?ll=" + response.result.latitude + "," + response.result.longitude + "&radius=" + radiusInput.value;
       if(startDatePicker.value){
           url += "&sdate=" + startDatePicker.value;
       }
@@ -80,11 +87,41 @@ function postCodeConverter(postcode){
   request('http://api.postcodes.io/postcodes/' + validPostcode, submitPostcode);
 }
 
-function drawMap(response){
-  console.log(response);
- }
- 
+
+// function showEvents(response, cb){
+//   response.forEach(response){
+//     eventName.textContent = response.event.name;
+//     eventDisplay.appendChild(eventList).
+//   }
+// }
+
+// function initMap(){
+//   var map = new  google.maps.Map(mapDisplay, {
+//     center: {lat: "51.509865", long: "-0.118092"},
+//     zoom: 10
+//   });
+// }
+
+// function drawMap(response){
+//   var map = new  google.maps.Map(mapDisplay, {
+//     center: {lat: response.lat, long: response.long},
+//     zoom: 10
+//   })
+//   response.forEach( event => {
+//     addMarker(map, event);
+//   })
+//  }
+
+//  function addMarker(map, event){
+//     var marker = new google.maps.Marker({
+//       position: new google.maps.LatLng(event.lat, event.long),
+//       map: map
+//     });
+//     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+//  }
+
  function request(url, cb){
+  var proxy = 'https://cors-anywhere.herokuapp.com/';
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4){
@@ -92,6 +129,6 @@ function drawMap(response){
       cb(result);
     }
   }
-  xhr.open("GET", url, true);
+  xhr.open("GET", proxy + url, true);
   xhr.send();
 }

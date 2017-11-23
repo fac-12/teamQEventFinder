@@ -53,11 +53,12 @@ const searchHandler = (req, response, endpoint) => {
   if (queries.edate){
       buildUrl += "&endDateTime=" + queries.edate + "T23:59:59Z";
     }
+  
   const options = {
     url: buildUrl,
     method: 'GET'
   }
-
+  
   request(options, (err, res, body) => {
     if(err){
       console.log("error :", error);
@@ -67,6 +68,6 @@ const searchHandler = (req, response, endpoint) => {
     response.writeHead(200, {"Content-Type": "text/html"});
     response.end(JSON.stringify(newOutcome));
   });
-}
+};
 
 module.exports = {homeHandler, staticFileHandler, searchHandler};
