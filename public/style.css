@@ -60,7 +60,7 @@ a:hover {
 .left-bar {
   display: flex;
   flex-direction: column;
-  width: 24rem;
+  width: 31rem;
   height: 100vh;
 }
 
@@ -79,7 +79,6 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 22rem;
   padding: 10px 5px;
   min-height: 19rem;
   background-color: rgba(169, 204, 251, 0.7);
@@ -141,4 +140,31 @@ form >p {
 
 .hidden {
   display: none;
+}
+
+@media screen and (max-width: 760px) {
+
+.flex-container{
+  width: 100vw;
+  height: auto;
+  flex-direction: column;
+}
+
+.left-bar {
+  align-self: flex-start;
+  height: 100vh;
+  width: 100vw;
+}
+
+.map-display {
+  width: 100vw;
+  align-self: flex-end;
+  border: none;
+}
+
+.eventContainer {
+  width: 100vw;
+  height: 50vh;
+}
+
 }

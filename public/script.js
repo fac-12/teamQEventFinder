@@ -15,22 +15,17 @@ var markers = [
     ['London Eye, London', 51.503454,-0.119562],
 ];
 var infoWindowContent = [
-    [
-
-    ]
+    ['<div class="info_content">' +
+    '<h3>London</h3>' +'</div>']
 ];
 
 searchByLocation.addEventListener('click', function(){
   try {
     locationSearch();
-    errorDisplay.className = "error-display";
-    errorDisplay.textContent = 'Loading...';
-    clearElement(eventDisplay);
+    displayError("Loading...");
   }
   catch (error) {
-    errorDisplay.className = "error-display";
-    errorDisplay.textContent = error;
-    clearElement(eventDisplay);
+    displayError(error);
   }
 });
 
@@ -53,24 +48,19 @@ todayDate();
 
 inputForm.addEventListener('submit', function(event){
   event.preventDefault();
-  console.log("submitted");
     try {
       postCodeSearch();
-      errorDisplay.className = "error-display";
-      errorDisplay.textContent = 'Loading...';
-      clearElement(eventDisplay);
+      displayError("Loading...");
     }
     catch (error){
-      errorDisplay.className = "error-display";
-      errorDisplay.textContent = error;
-      clearElement(eventDisplay);
+      displayError(error);
     }
     markers = [];
+    infoWindowContent = [];
 });
 
 
 function postCodeSearch(){
-  console.log("postcode search");
   if (postCodeInput.value === ''){
     throw new Error('No postcode entered');
   } else {
@@ -81,21 +71,11 @@ function postCodeSearch(){
 function locationSearch(){
   if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(function (position) {
-      latLong = position.coords.latitude+","+position.coords.longitude;
-      // markers.push(["current location", position.coords.latitude,position.coords.longitude])
-      var url = "/search?ll=" + latLong + "&radius=" + radiusInput.value;
-      if(startDatePicker.value){
-          url += "&sdate=" + startDatePicker.value;
-      }
-      if(endDatePicker.value){
-        url += "&edate=" + endDatePicker.value;
-      }
+      var url = buildUrl(position.coords.latitude, position.coords.longitude);
       request(url, updateEvents);
     }, function (error) {
       if (error) {
-        errorDisplay.className = "error-display";
-        errorDisplay.textContent = "Sorry, can't find your location";
-        clearElement(eventDisplay);
+        displayError("Sorry, can't find your location");
       }
     });
   } else {
@@ -106,17 +86,9 @@ function locationSearch(){
 
 function submitPostcode(response){
     if (response.status === 404){
-      errorDisplay.className = "error-display";
-      errorDisplay.textContent = 'Not a valid postcode';
-      clearElement(eventDisplay);
+      displayError('Not a valid postcode');
     } else {
-      var url = "/search?ll=" + response.result.latitude + "," + response.result.longitude + "&radius=" + radiusInput.value;
-      if(startDatePicker.value){
-          url += "&sdate=" + startDatePicker.value;
-      }
-      if(endDatePicker.value){
-        url += "&edate=" + endDatePicker.value;
-      }
+      var url = buildUrl(response.result.latitude,response.result.longitude);
       request(url, updateEvents);
     }
 }
@@ -130,7 +102,7 @@ function updateEvents(response) {
   drawEventList(response);
   errorDisplay.className = "error-display hidden";
   eventsMapMarkers(response);
-  initMap();
+  initialize();
 }
 
 function drawEventList(response) {
@@ -158,7 +130,6 @@ function drawEventList(response) {
     eventContainer.appendChild(textContainer);
     var image = document.createElement('div');
     image.style.backgroundImage = "url('"+event.imageUrl+"')";
-    console.log(image.style.backgroundImage);
     image.className = "thumbnail";
     eventContainer.appendChild(image);
     eventDisplay.appendChild(eventContainer);
@@ -227,19 +198,17 @@ function eventsMapMarkers(events){
     '<p> Venue: ' + event.venue + '</p>' +
     '<p> Date: '+ event.date + '</p>' +
     '<p> Time: '+ event.time + '</p>' +
-    '</div>'])
-  })
-  console.log(markers)
+    '</div>']);
+  });
 }
  function request(url, cb){
-  //var proxy = 'https://cors-anywhere.herokuapp.com/';
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4){
       var result = JSON.parse(xhr.responseText);
       cb(result);
     }
-  }
+  };
   xhr.open("GET", url, true);
   xhr.send();
 }
@@ -248,4 +217,21 @@ function clearElement(element){
   while (element.childElementCount > 1) {
       element.removeChild(element.lastChild);
   }
+}
+
+function displayError(message) {
+  errorDisplay.className = "error-display";
+  errorDisplay.textContent = message;
+  clearElement(eventDisplay);
+}
+
+function buildUrl(lat,long) {
+  var url = "/search?ll=" + lat + "," + long + "&radius=" + radiusInput.value;
+  if(startDatePicker.value){
+      url += "&sdate=" + startDatePicker.value;
+  }
+  if(endDatePicker.value){
+    url += "&edate=" + endDatePicker.value;
+  }
+  return url;
 }
