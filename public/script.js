@@ -8,8 +8,8 @@ const radiusInput = document.getElementById('radius');
 const errorDisplay = document.querySelector('.error-display');
 const searchByPostcode = document.getElementById('postcode-btn');
 const searchByLocation = document.getElementById('location-btn');
-const mapDisplay = documeny.querySelector('.map-display');
-const eventDisplay = documeny.querySelector('.event-display');
+const mapDisplay = document.querySelector('.map-display');
+const eventDisplay = document.querySelector('.event-display');
 const inputForm = document.getElementById('input-form');
 
 searchByLocation.addEventListener('click', function(){
@@ -24,6 +24,7 @@ searchByLocation.addEventListener('click', function(){
 
 inputForm.addEventListener('submit', function(event){
   event.preventDefault();
+  console.log("submitted");
     try {
       postCodeSearch();
       errorDisplay.textContent = 'loading...';
@@ -35,6 +36,7 @@ inputForm.addEventListener('submit', function(event){
 
 
 function postCodeSearch(){
+  console.log("postcode search");
   if (postCodeInput.value === ''){
     throw new Error('No postcode entered');
   } else {
@@ -109,10 +111,6 @@ function drawMap(response){
       map: map
     });
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
- }
-
-  errorDisplay.textContent = '';
-  console.log(response);
  }
 
  function request(url, cb){
