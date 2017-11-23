@@ -19,5 +19,7 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "request": "^2.83.0"
+  }
 }
