@@ -7,6 +7,8 @@ const postCodeInput = document.querySelector('.postcode-input');
 const errorDisplay = document.querySelector('.error-display');
 const searchByPostcode = document.getElementById('postcode-btn');
 const searchByLocation = document.getElementById('location-btn');
+const mapDisplay = documeny.querySelector('.map-display');
+const eventDisplay = documeny.querySelector('.event-display');
 
 searchByLocation.addEventListener('click', function(){
   try {
@@ -80,10 +82,32 @@ function postCodeConverter(postcode){
   request('http://api.postcodes.io/postcodes/' + validPostcode, submitPostcode);
 }
 
+
+function showEvents(response){
+  response.forEach(response){
+
+    eventDisplay.appendChild(list).
+  }
+}
+
 function drawMap(response){
-  console.log(response);
+  var map = new  google.maps.Map(mapDisplay, {
+    center: {lat: response.lat, long: response.long},
+    zoom: 10
+  })
+  response.forEach( event => {
+    addMarker(map, event);
+  })
  }
- 
+
+ function addMarker(map, event){
+    var marker = new google.maps.Marker({
+      position: new google.maps.LatLng(event.lat, event.long),
+      map: map
+    });
+    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+ }
+
  function request(url, cb){
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
