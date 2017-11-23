@@ -56,6 +56,7 @@ const searchHandler = (req, response, endpoint) => {
     }
     var outcome = JSON.parse(body);
     var newOutcome = cleanData(outcome);
+    console.log(newOutcome);
     response.writeHead(200, {"Content-Type": "text/html"});
     response.end(JSON.stringify(newOutcome));
   });
