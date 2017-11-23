@@ -27,3 +27,8 @@ We used the request module to make a call to Ticketmaster. We were able to speci
 
 - Give the user more choices to filter their search by (e.g. location radius, time of day, number of events)
 - Automatically load events happening today in the location found by the geolocater.
+
+## Things we learnt
+
+- It's easy for the request module to get confused with the request object - need to use different names!
+- 
