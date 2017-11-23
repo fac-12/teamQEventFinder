@@ -8,8 +8,8 @@ const radiusInput = document.getElementById('radius');
 const errorDisplay = document.querySelector('.error-display');
 const searchByPostcode = document.getElementById('postcode-btn');
 const searchByLocation = document.getElementById('location-btn');
-const mapDisplay = documeny.querySelector('.map-display');
-const eventDisplay = documeny.querySelector('.event-display');
+const mapDisplay = document.querySelector('.map-display');
+const eventDisplay = document.querySelector('.event-display');
 const inputForm = document.getElementById('input-form');
 
 searchByLocation.addEventListener('click', function(){
@@ -86,12 +86,20 @@ function postCodeConverter(postcode){
 }
 
 
-function showEvents(response){
-  // response.forEach(response){
+// function showEvents(response, cb){
+//   response.forEach(response){
+//     eventName.textContent = response.event.name;
+//     eventDisplay.appendChild(eventList).
+//   }
+// }
 
-  //   eventDisplay.appendChild(list).
-  // }
-}
+// function createEventList(){
+//   var eventList = document.createElement('ul');
+//   var eventItem =  document.createElement('li');
+
+// }
+request('https://maps.googleapis.com/maps/api/js?key=AIzaSyAmsmOS1UAZY-Mu3kGMEepDFO16VWvALTg')
+
 
 function drawMap(response){
   var map = new  google.maps.Map(mapDisplay, {
@@ -109,10 +117,6 @@ function drawMap(response){
       map: map
     });
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
- }
-
-  errorDisplay.textContent = '';
-  console.log(response);
  }
 
  function request(url, cb){
