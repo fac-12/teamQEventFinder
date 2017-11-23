@@ -45,11 +45,18 @@ const staticFileHandler = (request, response, endpoint) => {
 }
 
 const searchHandler = (req, response, endpoint) => {
-  var queries = querystring.parse(endpoint.split("?")[1], response);
-  const options = {
-    url: "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + api_key + "&latlong=" + queries.ll,
-    method: 'GET'
+  var queries = querystring.parse(endpoint.split("?")[1]);
+  var theURL = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + api_key + "&latlong=" + queries.ll + "&radius=" + queries.radius + "&unit=miles&sort=date,asc";
+  if (queries.sdate) {
+    theURL += "&startDateTime=" + queries.sdate + "T00:00:00Z";
   }
+  if (queries.edate) {
+    theURL += "&endDateTime=" + queries.edate + "T23:59:59Z";
+  }
+  const options = {
+    url: theURL,
+    method: 'GET'
+  };
   request(options, (err, res, body) => {
     if(err){
       console.log("error :", error);
@@ -59,6 +66,6 @@ const searchHandler = (req, response, endpoint) => {
     response.writeHead(200, {"Content-Type": "text/html"});
     response.end(JSON.stringify(newOutcome));
   });
-}
+};
 
 module.exports = {homeHandler, staticFileHandler, searchHandler};

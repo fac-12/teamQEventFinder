@@ -1,3 +1,40 @@
 body {
-  background-color: blue;
+  
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 20rem;
+  padding: 10px 5px;
+  border: 1px solid black;
+}
+
+.input-field {
+  margin: 5px;
+}
+
+input {
+  height: 1.2rem;
+  margin-left: 8px;
+}
+
+.search-btn {
+  width: 12rem;
+  padding: 5px;
+  margin: 5px;
+}
+
+.error-display {
+  margin-top: 5px;
+  height: 2rem;
+  color: red;
+}
+
+label {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
 }

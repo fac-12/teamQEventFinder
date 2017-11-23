@@ -8,21 +8,25 @@
     <link rel="stylesheet" href="./public/style.css">
   </head>
   <body>
-    <form id="events-form">
-        <label for="start-date-picker"> Start Date Picker
+    <form id="input-form">
+        <label for="start-date-picker" class="input-field"> Start Date (optional)
             <input type="date" class="start-date-picker" id="start-date-picker">
         </label>
 
-        <label for="end-date-picker"> End Date Picker
+        <label for="end-date-picker" class="input-field"> End Date (optional)
             <input type="date" class="end-date-picker" id="end-date-picker">
         </label>
 
-        <label for="postcode"> Post Code
-            <input type="text" class="postcode-input" placeholder="Enter Your Postcode" id="postcode">
+        <label for="postcode" class="input-field"> Post Code
+            <input type="text" class="postcode-input" placeholder="Enter a postcode" id="postcode">
         </label>
+        <label for="radius" class="input-field"> Search Radius (miles)
+            <input type="number" class="radius-input" placeholder="10" id="radius" value="10">
+        </label>
+        <button type="submit" class="search-btn" id="postcode-btn"> Search by post code </button>
+        <button type="button" class="search-btn" id="location-btn"> Search by current location </button>
+        <div class="error-display"> </div>
 
-        <button type="button" class="search-btn" id="location-btn"> Search by my location </button>
-        <button type="button" class="search-btn" id="postcode-btn"> Search by post code </button>
 
     </form>
 
