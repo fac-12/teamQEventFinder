@@ -8,10 +8,11 @@ const router = require('./router.js')
 
 function cleanData(data) {
   var eventsArray = data._embedded.events;
+  var emptyObjForFiltering = {};
   var noRepeat = eventsArray.filter(function(event){
     var key = event.name;
-    if (!this[key]) {
-      this[key]= true;
+    if (!emptyObjForFiltering[key]) {
+      emptyObjForFiltering[key]= true;
       return true;
     }
   });
