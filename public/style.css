@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+.flex-container {
+  display:flex;
+}
+
 .event-container {
   border: 1px solid black;
 }
@@ -45,4 +49,14 @@ label {
   display: flex;
   justify-content: space-between;
   width: 90%;
+}
+
+.map-display {
+  width: 100%;
+  height: 98vh;
+}
+
+.mapping {
+  width: 100%;
+  height: 100%;
 }
