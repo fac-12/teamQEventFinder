@@ -72,7 +72,13 @@ const searchHandler = (req, response, endpoint) => {
       response.end('Server error');
     }
     var outcome = parseResponse(body);
-    var newOutcome = cleanData(outcome);
+    var newOutcome;
+    if (outcome.page.totalElements === 0){
+       newOutcome = {err: "No events found"};
+    }
+    else {
+      newOutcome = cleanData(outcome);
+    }
     response.writeHead(200, {
       "Content-Type": "text/html"
     });

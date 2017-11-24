@@ -212,10 +212,15 @@ function initialize() {
 
 // update the map and events list
 function updateEvents(response) {
-  drawEventList(response);
-  errorDisplay.className = 'error-display hidden';
-  eventsMapMarkers(response);
-  initialize();
+  if (response.err) {
+    displayError(response.err);
+  }
+  else {
+    drawEventList(response);
+    errorDisplay.className = 'error-display hidden';
+    eventsMapMarkers(response);
+    initialize();
+  }
 }
 
 // Load google maps api javascript code, with callback to initialize()
