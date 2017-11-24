@@ -68,13 +68,21 @@ const searchHandler = (req, response, endpoint) => {
     if (err) {
       console.log("error :", error);
     }
-    var outcome = JSON.parse(body);
+    var outcome = parseResponse(body);
     var newOutcome = cleanData(outcome);
     response.writeHead(200, {
       "Content-Type": "text/html"
     });
     response.end(JSON.stringify(newOutcome));
   });
+};
+
+function parseResponse(response){
+  try {
+    return JSON.parse(response);
+  } catch (e) {
+    return JSON.parse(JSON.stringify(response));
+  }
 }
 
 module.exports = {
