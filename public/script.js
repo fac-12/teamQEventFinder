@@ -155,7 +155,6 @@ function drawEventList(response) {
 
 // create new map markers
 function eventsMapMarkers(events) {
-  console.log(events);
   events.forEach(function (event) {
     markers.push([event.venue, +event.lat, +event.long]);
     infoWindowContent.push(['<div class=\'info_content\'>' +
