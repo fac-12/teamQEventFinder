@@ -1,4 +1,4 @@
-
+/*eslint-disable*/
 
 // Grab necessary DOM elements
 var startDatePicker = document.getElementById('start-date-picker');
@@ -155,6 +155,7 @@ function drawEventList(response) {
 
 // create new map markers
 function eventsMapMarkers(events) {
+  console.log(events);
   events.forEach(function (event) {
     markers.push([event.venue, +event.lat, +event.long]);
     infoWindowContent.push(['<div class=\'info_content\'>' +
@@ -214,6 +215,8 @@ function initialize() {
 function updateEvents(response) {
   if (response.err) {
     displayError(response.err);
+    errMapMarker(response.latlong);
+    initialize();
   }
   else {
     drawEventList(response);
@@ -223,6 +226,16 @@ function updateEvents(response) {
   }
 }
 
+// Mapmarker function in case there are no events to display
+
+function errMapMarker(ll) {
+  var lat = ll.split(",")[0];
+  var long = ll.split(",")[1];
+  markers = [];
+  infoWindowContent = [];
+  markers.push(["Search location", +lat, +long]);
+  infoWindowContent.push(['<div class=\'info_content\'>' + '<h3>' + postCodeInput.value + '</h3>'])
+}
 // Load google maps api javascript code, with callback to initialize()
 function initMap() {
   var script = document.createElement('script');

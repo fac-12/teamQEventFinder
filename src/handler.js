@@ -74,7 +74,7 @@ const searchHandler = (req, response, endpoint) => {
     var outcome = parseResponse(body);
     var newOutcome;
     if (outcome.page.totalElements === 0){
-       newOutcome = {err: "No events found"};
+       newOutcome = {err: "No events found", latlong: queries.ll};
     }
     else {
       newOutcome = cleanData(outcome);
