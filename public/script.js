@@ -99,19 +99,16 @@ function submitPostcode(response) {
 }
 
 // Convert postcode, if entered, to lat and long coordinates using external API call
-function postCodeSearch() {
-  if (postCodeInput.value === '') {
-    throw new Error('No postcode entered');
-  } else {
-    var validPostcode = postCodeInput.value.split(' ').join('');
-    request('https://api.postcodes.io/postcodes/' + validPostcode, submitPostcode);
-  }
-}
+
 
 // When search by postcode, trigger post code validation function
 inputForm.addEventListener('submit', function (event) {
   event.preventDefault();
-  displayError('Loading...');
+  if (postCodeInput.value === '') {
+    displayError('No postcode entered');
+  }
+  else {
+    displayError('Loading...');
     var url = '/search?pc=' + postCodeInput.value + '&radius=' + radiusInput.value;
     if (startDatePicker.value) {
       url += '&sdate=' + startDatePicker.value;
@@ -120,6 +117,7 @@ inputForm.addEventListener('submit', function (event) {
       url += '&edate=' + endDatePicker.value;
     }
     request(url, updateEvents);
+  }
 });
 
 // Draw list of events and append to appropriate div

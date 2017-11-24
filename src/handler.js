@@ -10,7 +10,7 @@ const api_key = process.env.API_KEY;
 
 const homeHandler = (request, response) => {
   const filePath = path.join(__dirname, '..', 'public', 'index.html')
-  fs.readFile(filePath, function (err, file) {
+  fs.readFile(filePath, function(err, file) {
     if (err) {
       response.writeHead(500, {
         'Content-Type': 'text/plain'
@@ -33,7 +33,7 @@ const staticFileHandler = (request, response, endpoint) => {
   }
   const extension = endpoint.split('.')[1];
   const filePath = path.join(__dirname, '..', endpoint)
-  fs.readFile(filePath, function (err, file) {
+  fs.readFile(filePath, function(err, file) {
     if (err && err.code === 'ENOENT') {
       response.writeHead(404, {
         'Content-Type': 'text/plain'
@@ -52,50 +52,100 @@ const staticFileHandler = (request, response, endpoint) => {
 }
 
 const searchHandler = (req, response, endpoint) => {
-  var queries = querystring.parse(endpoint.split("?")[1]);
-  let buildUrl = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + api_key + "&latlong=" + queries.ll + "&radius=" + queries.radius + "&unit=miles&sort=date,asc";
-  if (queries.sdate) {
-    buildUrl += "&startDateTime=" + queries.sdate + "T00:00:00Z";
-  }
-  if (queries.edate) {
-    buildUrl += "&endDateTime=" + queries.edate + "T23:59:59Z";
-  }
-  const options = {
-    url: buildUrl,
-    method: 'GET'
-  };
-  request(options, (err, res, body) => {
-    if (err) {
-      response.writeHead(500, {
-        'Content-Type': 'text/plain'
+    var queries = querystring.parse(endpoint.split("?")[1]);
+    if (queries.ll) {
+      let buildUrl = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + api_key + "&latlong=" + queries.ll + "&radius=" + queries.radius + "&unit=miles&sort=date,asc";
+      if (queries.sdate) {
+        buildUrl += "&startDateTime=" + queries.sdate + "T00:00:00Z";
+      }
+      if (queries.edate) {
+        buildUrl += "&endDateTime=" + queries.edate + "T23:59:59Z";
+      }
+      const options = {
+        url: buildUrl,
+        method: 'GET'
+      };
+      request(options, (err, res, body) => {
+        if (err) {
+          response.writeHead(500, {
+            'Content-Type': 'text/plain'
+          });
+          response.end('Server error');
+        }
+        var outcome = parseResponse(body);
+        var newOutcome;
+        if (outcome.page.totalElements === 0) {
+          newOutcome = {
+            err: "No events found",
+            latlong: queries.ll
+          };
+        } else {
+          newOutcome = cleanData(outcome);
+        }
+        response.writeHead(200, {
+          "Content-Type": "text/html"
+        });
+        response.end(JSON.stringify(newOutcome));
       });
-      response.end('Server error');
-    }
-    var outcome = parseResponse(body);
-    var newOutcome;
-    if (outcome.page.totalElements === 0){
-       newOutcome = {err: "No events found", latlong: queries.ll};
-    }
-    else {
-      newOutcome = cleanData(outcome);
-    }
-    response.writeHead(200, {
-      "Content-Type": "text/html"
-    });
-    response.end(JSON.stringify(newOutcome));
-  });
-};
+    } else if (queries.pc) {
+      var validPostcode = postCodeInput.value.split(' ').join('');
+      pcOptions = {
+        url: 'https://api.postcodes.io/postcodes/' + validPostcode,
+        method: 'GET'
+      };
+      request(pcOptions, (err, pcRes, pcBody) => {
+          if (err) {
+            response.writeHead(500, {
+              'Content-Type': 'text/plain'
+            });
+            response.end('Server error');
+          }
+          var buildUrl = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + api_key + "&latlong=" + pcRes.result.latitude + "," + pcRes.result.longitude + "&radius=" + queries.radius + "&unit=miles&sort=date,asc";
+          if (queries.sdate) {
+            buildUrl += "&startDateTime=" + queries.sdate + "T00:00:00Z";
+          }
+          if (queries.edate) {
+            buildUrl += "&endDateTime=" + queries.edate + "T23:59:59Z";
+          }
+          const options = {
+            url: buildUrl,
+            method: 'GET'
+          };
+          request(options, (err, res, body) => {
+            if (err) {
+              response.writeHead(500, {
+                'Content-Type': 'text/plain'
+              });
+              response.end('Server error');
+            }
+            var outcome = parseResponse(body);
+            var newOutcome;
+            if (outcome.page.totalElements === 0) {
+              newOutcome = {
+                err: "No events found",
+                latlong: queries.ll
+              };
+            } else {
+              newOutcome = cleanData(outcome);
+            }
+            response.writeHead(200, {
+              "Content-Type": "text/html"
+            });
+            response.end(JSON.stringify(newOutcome));
+          })
+        }
+      }
 
-function parseResponse(response){
-  try {
-    return JSON.parse(response);
-  } catch (e) {
-    return JSON.parse(JSON.stringify(response));
-  }
-}
+      function parseResponse(response) {
+        try {
+          return JSON.parse(response);
+        } catch (e) {
+          return JSON.parse(JSON.stringify(response));
+        }
+      }
 
-module.exports = {
-  homeHandler,
-  staticFileHandler,
-  searchHandler
-};
+      module.exports = {
+        homeHandler,
+        staticFileHandler,
+        searchHandler
+      };
