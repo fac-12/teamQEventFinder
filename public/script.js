@@ -111,14 +111,15 @@ function postCodeSearch() {
 // When search by postcode, trigger post code validation function
 inputForm.addEventListener('submit', function (event) {
   event.preventDefault();
-  try {
-    postCodeSearch();
-    displayError('Loading...');
-  } catch (error) {
-    displayError(error);
-  }
-  markers = [];
-  infoWindowContent = [];
+  displayError('Loading...');
+    var url = '/search?pc=' + postCodeInput.value + '&radius=' + radiusInput.value;
+    if (startDatePicker.value) {
+      url += '&sdate=' + startDatePicker.value;
+    }
+    if (endDatePicker.value) {
+      url += '&edate=' + endDatePicker.value;
+    }
+    request(url, updateEvents);
 });
 
 // Draw list of events and append to appropriate div
@@ -155,7 +156,8 @@ function drawEventList(response) {
 
 // create new map markers
 function eventsMapMarkers(events) {
-  console.log(events);
+  markers = [];
+  infoWindowContent = [];
   events.forEach(function (event) {
     markers.push([event.venue, +event.lat, +event.long]);
     infoWindowContent.push(['<div class=\'info_content\'>' +
