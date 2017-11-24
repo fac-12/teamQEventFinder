@@ -66,7 +66,10 @@ const searchHandler = (req, response, endpoint) => {
   };
   request(options, (err, res, body) => {
     if (err) {
-      console.log("error :", error);
+      response.writeHead(500, {
+        'Content-Type': 'text/plain'
+      });
+      response.end('Server error');
     }
     var outcome = parseResponse(body);
     var newOutcome = cleanData(outcome);
